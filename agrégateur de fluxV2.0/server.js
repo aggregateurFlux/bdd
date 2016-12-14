@@ -1,12 +1,9 @@
 var express 	 = require('express');
 var app 	   	 = express();
-var bodyparser= require('body-parser');
 var mysql 		 = require('mysql');
 var config 		 = require('./config.js');
-var sql 	    	= require('mssql');
-wait            =require('wait.for');
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8081;
 var connection = mysql.createConnection(config.bdd);
 connection.connect();
 
@@ -35,7 +32,7 @@ app.get('/get/identification', function (req, res) {
         var result = userF;
       }
       else {
-        var result = "bad password";
+        var result = "mauvais mot de passe";
       }
 
       res.setHeader("Content-Type","text/json");
@@ -101,10 +98,13 @@ app.post('/post/user',function(req, res) {
 });
 
 //check link in social network if not here create it 
-/*function createSocialNetwork(valID) {
+var createSocialNetwork = function (valID) {
+  //var promise = new Promise();
+
   var sqlSelect   = "SELECT * FROM user JOIN socialnetwork ON user.id = socialnetwork.userIdentifiant where user.id = ?"
   var sqlInsertSN = "INSERT INTO socialnetwork(userIdentifiant) VALUES (?);"
   connection.query(sqlSelect,valID, function(err, rows, fields) {
+    console.log("test");
     if (err) {
       console.log('Error while performing Query.');
     }
@@ -119,13 +119,27 @@ app.post('/post/user',function(req, res) {
           }
           else {
             return (rows[0].idS);
+            //promise.resolve( rows[0].idS );
           }
         });    
       }
     }
-  });
-}
 
+    //return promise;
+  });
+  /*
+  var promise = new Promise();
+
+  // assuming processObjWithRef takes a callback
+  processObjWithRef(samplePayload, myNewObj, callStack, function() {
+    if (callStack.length == 0) {
+      promise.resolve(some_results);
+    }
+  });
+
+  return promise;*/
+}
+/*
 //create app twitter 
 app.post('/post/apptwitter',function(req, res) {
   var ask         = req.headers; 
@@ -133,25 +147,38 @@ app.post('/post/apptwitter',function(req, res) {
   var twACTOID    = ask.accessTokenId;
   var twACTOSE    = ask.accessTokenSecret;
   var sqlInsert   = "INSERT INTO twitter (socialNetworkId, accessTokenId, accessTokenSecret) VALUES (? , ? , ?);"
-  var idSN        = wait.for(createSocialNetwork(idU)); 
-  console.log(idSN);
+  var idSN        =  createSocialNetwork(idU,);
+  console.log("idSN : ", idSN);
   connection.query(sqlInsert,[idSN,twACTOID,twACTOSE], function(err, rows, fields) {
     if (err) {
-      onsole.log('Error while performing Query.');
+      console.log('Error while performing Query.');
     }
     else {
       res.setHeader("Content-Type","text/json");
       res.end(JSON.stringify("app twitter créer");
     }
   });
+});
 
-});*/
-
-
-
-
-
-
+//create app instagram 
+app.post('/post/appinstagram',function(req, res) {
+  var ask         = req.headers; 
+  var idU         = ask.id;
+  var instTOKEN   = ask.tokenInsta;
+  var sqlInsert   = "INSERT INTO instagram (socialNetworkId, tokenInsta) VALUES (? , ?);";
+  var idSN        =  createSocialNetwork(idU);
+  console.log("idSN : ", idSN);
+  connection.query(sqlInsert,[idSN,instTOKEN], function(err, rows, fields) {
+    if (err) {
+      console.log('Error while performing Query.');
+    }
+    else {
+      res.setHeader("Content-Type","text/json");
+      res.end(JSON.stringify("app instagram créer");
+    }
+  });
+});
+*/
 
 
 

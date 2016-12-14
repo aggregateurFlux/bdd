@@ -1,20 +1,20 @@
 Pour vérifier que l'utilisateur à bien le droit de se connecter 
 
 En GET
-http://localhost:8080/get/identification
+http://localhost:8081/get/identification
 paramètre : login et mot-de-passe de l'utilisateur 
 renvoi : ID ou "bad password"
 
 
 récupérer les accés au token d'un utilisateur 
 En GET
-http://localhost:8080/get/user
+http://localhost:8081/get/user
 paramètre : id utilisateur
 renvoi : id utilisateur + si existant : (twitter token id et secret, instagram token) 
 
 
 créer un utilisateur 
 En POST
-http://localhost:8080/post/user
+http://localhost:8081/post/user
 paramètre : login et users
 renvoi : id utilisateur 
